@@ -1,0 +1,66 @@
+{
+  "name": "asisten-belajar",
+  "version": "1.0.0",
+  "description": "Aplikasi Asisten Belajar lokal tanpa login untuk membantu mahasiswa mempelajari dan mengerjakan tugas untuk 4 mata kuliah: 1. Basis Data Terdistribusi 2. Manajemen Resiko dan Audit SI 3. Komunikasi Bisnis dan Teknis 4. Kewirausahaan TI",
+  "type": "module",
+  "main": "electron/main.mjs",
+  "scripts": {
+    "install:all": "npm install && npm install --prefix server && npm install --prefix client",
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "desktop:dev": "npm run build --prefix client && electron .",
+    "desktop:build": "npm run build --prefix client && electron-builder --win --dir -c.npmRebuild=false",
+    "desktop:dist": "npm run build --prefix client && electron-builder --win -c.npmRebuild=false"
+  },
+  "dependencies": {
+    "@google/genai": "^2.27.0",
+    "better-sqlite3": "^13.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.5",
+    "express": "^5.2.1",
+    "mammoth": "^1.13.0",
+    "multer": "^2.4.0",
+    "pdf-parse": "^1.1.4"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "electron": "44.5.1",
+    "electron-builder": "^26.4.0"
+  },
+  "build": {
+    "appId": "com.asistenbelajar.app",
+    "productName": "Asisten Belajar Mahasiswa",
+    "directories": {
+      "output": "dist-desktop"
+    },
+    "files": [
+      "electron/**/*",
+      "server/**/*",
+      "client/dist/**/*",
+      "package.json",
+      "!server/.env",
+      "!server/.env.*",
+      "!**/.env",
+      "!**/.env.*",
+      "!**/*.db",
+      "!**/*.db-*",
+      "!**/*.sqlite",
+      "!**/*.sqlite-*",
+      "!**/*.sqlite3",
+      "!node_modules/better-sqlite3/prebuilds/darwin-*/**",
+      "!node_modules/better-sqlite3/prebuilds/linux-*/**",
+      "!node_modules/better-sqlite3/prebuilds/linuxmusl-*/**",
+      "!node_modules/better-sqlite3/prebuilds/win32-arm64/**"
+    ],
+    "asarUnpack": [
+      "**/node_modules/better-sqlite3/**/*"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    }
+  }
+}
